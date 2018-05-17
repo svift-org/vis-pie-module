@@ -3,8 +3,8 @@
       "dev":true
     },
     "vis":{
-      "type":"columns",
-      "title":"Column Chart"
+      "type":"gooey",
+      "title":"Gooey"
     },
     "style": {
       "font": "DecimaMonoProBold",
@@ -12,26 +12,25 @@
       "color": {
         "main": "#71609B",
         "second": "#D8D8D8",
-        "background": "#fff"
+        "background": "#fff",
+        "dataColors": ["#EF0077","#00007F","#24B151","#F7FF52","blue","pink","green"]
       }
     },
     "data":{
-      "columns":["Text","Wert"],
-      "types":["string","int"],
+      "columns":["Wert"],
+      "types":["int"],
       "data":
         [
-          {"label":"A","data":[15]},
-          {"label":"B","data":[30]},
-          {"label":"C","data":[5]},
-          {"label":"D","data":[25]}
+          {"label":"A","data":[1]},
+          {"label":"B","data":[2]},
+          {"label":"C","data":[3]}
         ]
       ,
-      "labels":[null],
-      "title": "Pie title here",
-      "subTitle": "some sub title",
-      "attribution": "created with svift",
+      "lables":[null],
+      "title": "Titlge",
+      "subTitle": "SÜub title",
+      "attribution": "Some attribution here",
       "source": "source: svift team",
       "format":"single-set"
     }
   }
-

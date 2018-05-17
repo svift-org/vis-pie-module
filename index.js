@@ -4,15 +4,10 @@ SVIFT.vis.pie = (function (data, container) {
   var module = SVIFT.vis.base(data, container);
 
   module.d3config = {
-    // ease:d3.easeQuadOut, 
-    // yInterpolate:[], 
-    // hInterpolate:[],
-    // oInterpolate:[],
-    // steps:data.data.data.length,
-    // animation:{
-    //   duration: 3000,
-    //   barPartPercent: .8
-    // }
+    ease:d3.easeCubicInOut, //https://github.com/d3/d3-ease
+    easeExp:d3.easeExpIn,
+    textInterpol: d3.interpolate(0,1)
+    // interpolate: d3.interpolate(0,1)
   };
 
   //Initialisation e.g. creat svg object
@@ -28,8 +23,8 @@ SVIFT.vis.pie = (function (data, container) {
     module.d3config.pieContainer.datum(data.data.data).selectAll("path")
         .data(module.d3config.pie)
       .enter().append("g").classed("arcContainer",true).append("path")
-        .attr("fill","red")
-        .attr("stroke", "red")
+        .attr("fill",function(d,i){return data.style.color.dataColors[i]})
+        // .attr("stroke", "red")
         .attr("opacity",1)
         .classed("arc",true);
 
@@ -50,33 +45,73 @@ SVIFT.vis.pie = (function (data, container) {
 
     var width = module.vizSize.width;
     var height = module.vizSize.height;
-    var maxSize = Math.min(width,height);
-
-    var arc = d3.arc()
-        .innerRadius(maxSize / 5)
-        .outerRadius(maxSize / 2)
-        .cornerRadius(15);
+    module.d3config.maxSize = Math.min(width,height);
 
     module.d3config.pieContainer
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"); //move circle to the middle
 
+
+    // module.d3config.pieText
+    //       .attr("transform", function(d) {return "translate(" + arc.centroid(d) + ")"; })
+    //       .attr("dy", ".35em")
+    //       .text(function(d) {return d.data.label[0] + ": " + d.data.data[0] })
+    //       .style("text-anchor","middle")
+    //       .style("fill","white")
+    //       // .style("text-shadow","-1px -1px 1px #ffffff, -1px 0px 1px #ffffff, -1px 1px 1px #ffffff, 0px -1px 1px #ffffff, 0px 1px 1px #ffffff, 1px -1px 1px #ffffff, 1px 0px 1px #ffffff, 1px 1px 1px #ffffff")
+    //       .attr('class', 'labelText') 
+
+  };
+
+
+  module.animatePie = function(t){
+
+    var innerRadiusFixed = module.d3config.maxSize/4;
+    // var innerRadiusInt = d3.interpolate(0,(module.d3config.maxSize/5));
+    var outerRadiusInt = d3.interpolate(innerRadiusFixed,(module.d3config.maxSize/2));
+
+    var innerRadius = innerRadiusFixed;
+    var outerRadius = outerRadiusInt(module.d3config.ease(t));
+    // module.d3config.count
+    //   .text(interpolation)
+    //   .attr("opacity",1)
+
+
+    module.d3config.arc = d3.arc()
+        .innerRadius(innerRadius)
+        .outerRadius(outerRadius)
+        .cornerRadius(5);
+
     d3.selectAll(".arc")
-        .attr("d", arc)
-        // .each(function(d) {this._current = d;})
+        .attr("d", module.d3config.arc)
+
+
+    d3.selectAll(".arc")
+        .attr("d", module.d3config.arc)
+        .each(function(d) {this._current = d;})
+
+  };
+
+  module.animatetext = function(t){
 
     module.d3config.pieText
-          .attr("transform", function(d) {return "translate(" + arc.centroid(d) + ")"; })
+          .attr("transform", function(d) {return "translate(" + module.d3config.arc.centroid(d) + ")"; })
           .attr("dy", ".35em")
           .text(function(d) {return d.data.label[0] + ": " + d.data.data[0] })
           .style("text-anchor","middle")
           .style("fill","white")
           // .style("text-shadow","-1px -1px 1px #ffffff, -1px 0px 1px #ffffff, -1px 1px 1px #ffffff, 0px -1px 1px #ffffff, 0px 1px 1px #ffffff, 1px -1px 1px #ffffff, 1px 0px 1px #ffffff, 1px 1px 1px #ffffff")
-          .attr('class', 'labelText') 
-
+          .attr('class', 'labelText')
+          .attr('opacity',module.d3config.textInterpol(module.d3config.ease(t)))
 
   };
 
-  module.timeline = {};
+
+
+  module.timeline['pie'] = {start:0, end:2000, func:module.animatePie};
+  module.timeline['text'] = {start:2000, end:3000, func:module.animatetext};
+
 
   return module;
  });
+
+
