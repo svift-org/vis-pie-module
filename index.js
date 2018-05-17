@@ -27,11 +27,13 @@ SVIFT.vis.pie = (function (data, container) {
 
     module.d3config.pieContainer.datum(data.data.data).selectAll("path")
         .data(module.d3config.pie)
-      .enter().append("path")
+      .enter().append("g").classed("arcContainer",true).append("path")
         .attr("fill","red")
         .attr("stroke", "red")
         .attr("opacity",1)
         .classed("arc",true);
+
+    module.d3config.pieText = d3.selectAll(".arcContainer").append("text");
 
   };
 
@@ -61,7 +63,17 @@ SVIFT.vis.pie = (function (data, container) {
     d3.selectAll(".arc")
         .attr("d", arc)
         // .each(function(d) {this._current = d;})
-        
+
+    module.d3config.pieText
+          .attr("transform", function(d) {return "translate(" + arc.centroid(d) + ")"; })
+          .attr("dy", ".35em")
+          .text(function(d) {return d.data.label[0] + ": " + d.data.data[0] })
+          .style("text-anchor","middle")
+          .style("fill","white")
+          // .style("text-shadow","-1px -1px 1px #ffffff, -1px 0px 1px #ffffff, -1px 1px 1px #ffffff, 0px -1px 1px #ffffff, 0px 1px 1px #ffffff, 1px -1px 1px #ffffff, 1px 0px 1px #ffffff, 1px 1px 1px #ffffff")
+          .attr('class', 'labelText') 
+
+
   };
 
   module.timeline = {};
