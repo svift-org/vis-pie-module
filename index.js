@@ -55,7 +55,7 @@ SVIFT.vis.pie = (function (data, container) {
 
   module.animatePie = function(t){
 
-    var visPadding = 30;
+    var visPadding = 15;
 
     var innerRadiusFixed = module.d3config.maxSize/4;
     // var innerRadiusInt = d3.interpolate(0,(module.d3config.maxSize/5));
