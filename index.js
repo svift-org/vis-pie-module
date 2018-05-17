@@ -16,7 +16,7 @@ SVIFT.vis.pie = (function (data, container) {
     module.d3config.pieContainer = module.vizContainer.append("g");
 
     module.d3config.pie  = d3.pie()
-      .value(function(d) {console.log(d.data[0]);return d.data[0]; })
+      .value(function(d) {return d.data[0]; })
       .sort(null)
       .padAngle(.1);
 
@@ -50,24 +50,16 @@ SVIFT.vis.pie = (function (data, container) {
     module.d3config.pieContainer
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"); //move circle to the middle
 
-
-    // module.d3config.pieText
-    //       .attr("transform", function(d) {return "translate(" + arc.centroid(d) + ")"; })
-    //       .attr("dy", ".35em")
-    //       .text(function(d) {return d.data.label[0] + ": " + d.data.data[0] })
-    //       .style("text-anchor","middle")
-    //       .style("fill","white")
-    //       // .style("text-shadow","-1px -1px 1px #ffffff, -1px 0px 1px #ffffff, -1px 1px 1px #ffffff, 0px -1px 1px #ffffff, 0px 1px 1px #ffffff, 1px -1px 1px #ffffff, 1px 0px 1px #ffffff, 1px 1px 1px #ffffff")
-    //       .attr('class', 'labelText') 
-
   };
 
 
   module.animatePie = function(t){
 
+    var visPadding = 30;
+
     var innerRadiusFixed = module.d3config.maxSize/4;
     // var innerRadiusInt = d3.interpolate(0,(module.d3config.maxSize/5));
-    var outerRadiusInt = d3.interpolate(innerRadiusFixed,(module.d3config.maxSize/2));
+    var outerRadiusInt = d3.interpolate(innerRadiusFixed,((module.d3config.maxSize/2)-visPadding));
 
     var innerRadius = innerRadiusFixed;
     var outerRadius = outerRadiusInt(module.d3config.ease(t));

@@ -13,7 +13,7 @@
         "main": "#71609B",
         "second": "#D8D8D8",
         "background": "#fff",
-        "dataColors": ["#EF0077","#00007F","#24B151","#F7FF52","blue","pink","green"]
+        "dataColors": ["#EF0077","#00007F","#24B151","purple","blue","pink","green"]
       }
     },
     "data":{
@@ -23,7 +23,9 @@
         [
           {"label":"A","data":[1]},
           {"label":"B","data":[2]},
-          {"label":"C","data":[3]}
+          {"label":"C","data":[3]},
+          {"label":"D","data":[3]},
+          {"label":"E","data":[3]}
         ]
       ,
       "lables":[null],
