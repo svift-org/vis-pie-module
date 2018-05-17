@@ -22,7 +22,8 @@
         [
           {"label":"A","data":[15]},
           {"label":"B","data":[30]},
-          {"label":"C","data":[5]}
+          {"label":"C","data":[5]},
+          {"label":"D","data":[25]}
         ]
       ,
       "labels":[null],
