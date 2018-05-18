@@ -57,7 +57,7 @@ SVIFT.vis.pie = (function (data, container) {
         module.goTo(1);
         module.pause();
     }
-        
+
   };
 
 
@@ -83,9 +83,9 @@ SVIFT.vis.pie = (function (data, container) {
     module.d3config.pieText
           .attr("transform", function(d) {return "translate(" + module.d3config.arc.centroid(d) + ")"; })
           .attr("dy", ".35em")
-          .text(function(d) {return d.data.label[0] + " " + d.data.data[0] })
+          .text(function(d) {return d.data.label + " " + d.data.data[0] })
           .style("text-anchor","middle")
-          // .style("fill","white")
+          .style("fill","black")
            // .style("text-shadow","-1px -1px 1px #ffffff, -1px 0px 1px #ffffff, -1px 1px 1px #ffffff, 0px -1px 1px #ffffff, 0px 1px 1px #ffffff, 1px -1px 1px #ffffff, 1px 0px 1px #ffffff, 1px 1px 1px #ffffff")
           .attr('class', 'labelText')
           .attr('opacity',module.d3config.textInterpol(module.d3config.ease(t)))
