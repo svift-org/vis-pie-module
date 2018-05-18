@@ -6,7 +6,8 @@ SVIFT.vis.pie = (function (data, container) {
   module.d3config = {
     ease:d3.easeCubicInOut, //https://github.com/d3/d3-ease
     easeExp:d3.easeExpIn,
-    textInterpol: d3.interpolate(0,1)
+    textInterpol: d3.interpolate(0,1),
+    visPadding : 15
     // interpolate: d3.interpolate(0,1)
   };
 
@@ -45,41 +46,35 @@ SVIFT.vis.pie = (function (data, container) {
 
     var width = module.vizSize.width;
     var height = module.vizSize.height;
-    module.d3config.maxSize = Math.min(width,height);
+    module.d3config.minSize = Math.min(width,height);
+
+    console.log(width,height,module.d3config.minSize)
 
     module.d3config.pieContainer
         .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")"); //move circle to the middle
 
+    if(module.playHead == module.playTime){
+        module.goTo(1);
+        module.pause();
+    }
+        
   };
 
 
   module.animatePie = function(t){
 
-    var visPadding = 15;
-
-    var innerRadiusFixed = module.d3config.maxSize/4;
-    // var innerRadiusInt = d3.interpolate(0,(module.d3config.maxSize/5));
-    var outerRadiusInt = d3.interpolate(innerRadiusFixed,((module.d3config.maxSize/2)-visPadding));
-
-    var innerRadius = innerRadiusFixed;
+    var innerRadiusFixed = module.d3config.minSize/4;
+    var outerRadiusInt = d3.interpolate(innerRadiusFixed,((module.d3config.minSize/2)-module.d3config.visPadding));
     var outerRadius = outerRadiusInt(module.d3config.ease(t));
-    // module.d3config.count
-    //   .text(interpolation)
-    //   .attr("opacity",1)
-
 
     module.d3config.arc = d3.arc()
-        .innerRadius(innerRadius)
+        .innerRadius(innerRadiusFixed)
         .outerRadius(outerRadius)
         .cornerRadius(5);
 
     d3.selectAll(".arc")
         .attr("d", module.d3config.arc)
-
-
-    d3.selectAll(".arc")
-        .attr("d", module.d3config.arc)
-        .each(function(d) {this._current = d;})
+        // .each(function(d) {this._current = d;})
 
   };
 
@@ -88,10 +83,10 @@ SVIFT.vis.pie = (function (data, container) {
     module.d3config.pieText
           .attr("transform", function(d) {return "translate(" + module.d3config.arc.centroid(d) + ")"; })
           .attr("dy", ".35em")
-          .text(function(d) {return d.data.label[0] + ": " + d.data.data[0] })
+          .text(function(d) {return d.data.label[0] + " " + d.data.data[0] })
           .style("text-anchor","middle")
-          .style("fill","white")
-          // .style("text-shadow","-1px -1px 1px #ffffff, -1px 0px 1px #ffffff, -1px 1px 1px #ffffff, 0px -1px 1px #ffffff, 0px 1px 1px #ffffff, 1px -1px 1px #ffffff, 1px 0px 1px #ffffff, 1px 1px 1px #ffffff")
+          // .style("fill","white")
+           // .style("text-shadow","-1px -1px 1px #ffffff, -1px 0px 1px #ffffff, -1px 1px 1px #ffffff, 0px -1px 1px #ffffff, 0px 1px 1px #ffffff, 1px -1px 1px #ffffff, 1px 0px 1px #ffffff, 1px 1px 1px #ffffff")
           .attr('class', 'labelText')
           .attr('opacity',module.d3config.textInterpol(module.d3config.ease(t)))
 
